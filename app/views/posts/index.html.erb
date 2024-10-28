@@ -1,0 +1,14 @@
+<h1>All Posts</h1>
+<%= link_to "New Post", new_post_path %>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= link_to post.title, post_path(post) %> 
+      <p><%= post.content %></p>
+      <p>By: <%= post.user.username %></p>
+      <p>Comments: <%= link_to post.comments.count, post_path(post) %></p>
+      <p>Last updated: <%= post.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+    </li>
+  <% end %>
+</ul>

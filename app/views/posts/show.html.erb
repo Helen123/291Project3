@@ -1,0 +1,28 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+<p>By: <%= @post.user.username %></p>
+
+<h2>Comments</h2>
+<ul>
+  <% @post.comments.each do |comment| %>
+    <li>
+      <p><%= comment.content %></p>
+      <p>By: <%= comment.user.username %> on <%= comment.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Add a Comment</h3>
+<%= form_with(model: [@post, @comment], local: true) do |form| %>
+  <div>
+    <%= form.label :content, "Comment" %>
+    <%= form.text_area :content, required: true %>
+  </div>
+  <div>
+    <%= form.submit "Post Comment" %>
+  </div>
+<% end %>
+
+<%= link_to "Edit", edit_post_path(@post) if @post.user_id == session[:user_id] %>
+<%= link_to "Delete", post_path(@post), method: :delete, data: { confirm: "Are you sure?", turbo: false }  if @post.user_id == session[:user_id] %>
+<%= link_to "Back to Posts", posts_path %>
