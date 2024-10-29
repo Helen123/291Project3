@@ -8,7 +8,8 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to post_path(@post), notice: "Comment added!"
     else
-      render "posts/show", status: :unprocessable_entity
+      flash.now[:alert] = "Failed to add comment."
+      render "posts/show", locals: { post: @post, comment: @comment }, status: :unprocessable_entity
     end
   end
 

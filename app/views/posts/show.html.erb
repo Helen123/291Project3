@@ -1,3 +1,14 @@
+<% if @comment.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+    <ul>
+      <% @comment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <h1><%= @post.title %></h1>
 <p><%= @post.content %></p>
 <p>By: <%= @post.user.username %></p>
@@ -5,10 +16,12 @@
 <h2>Comments</h2>
 <ul>
   <% @post.comments.each do |comment| %>
-    <li>
-      <p><%= comment.content %></p>
-      <p>By: <%= comment.user.username %> on <%= comment.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
-    </li>
+   <% if comment.persisted? %> <!-- Ensure only saved comments are shown -->
+      <li>
+        <p><%= comment.content %></p>
+        <p>By: <%= comment.user.username %> on <%= comment.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
