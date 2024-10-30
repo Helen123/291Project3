@@ -60,7 +60,11 @@ class PostsController < ApplicationController
 
   # Find the post based on ID
   def set_post
-    @post = Post.find(params[:id])
+    begin
+      @post = Post.find(params[:id])
+    rescue 
+      render plain: "404 Not Found", status: :not_found
+    end
   end
 
   # Ensure only the author can edit or delete a post
