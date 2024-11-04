@@ -14,15 +14,22 @@ Rails.application.routes.draw do
 end
 
 Rails.application.routes.draw do
-  root 'posts#index'  # Root route for logged-in users
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
   delete '/logout', to: 'sessions#destroy'
+  get '*path', to: redirect('/login'), constraints: ->(req) { 
+    Rails.logger.info "Checking session1111111: #{req.session.to_hash}" # Logs the entire session
+    req.session[:user_id].nil?
+  }
+  get '/', to: redirect('/login'), constraints: ->(req) { 
+    Rails.logger.info "Checking session1111111: #{req.session.to_hash}" # Logs the entire session
+    req.session[:user_id].nil?
+  }
+
+  root 'posts#index'  # Root route for logged-in users
   
-  # Redirect all other pages to login if no user session exists
-  get '*path', to: redirect('/login'), constraints: ->(req) { req.session[:username].nil? }
 
   resources :posts do
     resources :comments, only: [:create]

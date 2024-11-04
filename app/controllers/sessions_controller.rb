@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_or_create_by(username: params[:username])
     session[:user_id] = user.id # Store user ID in the session
+    puts "Session data after login: #{session.to_hash}" 
     redirect_to root_path # Redirect to the root path 
   end
 
